@@ -1,0 +1,64 @@
+{
+  "$schema": "https://nexuslake.ai/schemas/proof-certificate-v1.json",
+  "proof_certificate_id": "cert-mig-payments-20260920-001",
+  "timestamp": "2026-09-20T01:31:00Z",
+  "migration_job_id": "job-pg-to-iceberg-txn-09",
+  "source_system": {
+    "engine": "PostgreSQL",
+    "endpoint": "pg-payments-prod.internal",
+    "database": "PAYMENTS_CORE",
+    "asset": "PAYMENTS_CORE.TRANSACTIONS"
+  },
+  "target_system": {
+    "catalog": "BigLake Iceberg REST Catalog",
+    "table": "payments_curated.transactions",
+    "storage_location": "gs://payments-iceberg-lakehouse-prod/payments_curated/transactions",
+    "snapshot_id": 8492019482019482011
+  },
+  "verifications": {
+    "tier_1_structural": {
+      "status": "PASSED",
+      "source_schema_sha256": "4a5e1e8a93e3612d4d983427182743818e329048a14920b72183e20184712038",
+      "target_schema_sha256": "4a5e1e8a93e3612d4d983427182743818e329048a14920b72183e20184712038",
+      "column_count": 28,
+      "type_mismatches": 0
+    },
+    "tier_2_statistical": {
+      "status": "PASSED",
+      "source_row_count": 184920182,
+      "target_row_count": 184920182,
+      "row_count_delta": 0,
+      "hll_cardinality_precision": 14,
+      "source_hll_estimate": 184920000,
+      "target_hll_estimate": 184920000,
+      "null_count_parity": true
+    },
+    "tier_3_cryptographic": {
+      "status": "PASSED",
+      "algorithm": "COMMUTATIVE_XOR_HMAC_SHA256",
+      "source_root_merkle_hash": "c8b413159c9b581e82ef620ef1bb7864c24e69b5961d68377b752df85e13028e",
+      "target_root_merkle_hash": "c8b413159c9b581e82ef620ef1bb7864c24e69b5961d68377b752df85e13028e",
+      "partitions_evaluated": 365,
+      "bit_level_match": true
+    },
+    "tier_4_semantic": {
+      "status": "PASSED",
+      "queries_executed": 8,
+      "financial_metric_variance": 0.000000,
+      "discrepancies_found": 0
+    }
+  },
+  "governance": {
+    "dataplex_policy_tags_applied": 3,
+    "pii_columns_masked": [
+      "CARD_PAN"
+    ],
+    "access_control_synced": true
+  },
+  "overall_status": "CERTIFIED_VALID",
+  "signoff": {
+    "agent": "ReconciliationProofAgent",
+    "model": "Gemini 2.5 Flash",
+    "automated_signature": "SIG-ED25519-9481028301948201"
+  }
+}

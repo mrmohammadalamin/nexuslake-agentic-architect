@@ -1,0 +1,345 @@
+================================================================================
+           NEXUSLAKE AGENTIC ARCHITECT: ARCHITECTURAL ANALYSIS & PROPOSAL
+    AI-Native Enterprise Data Estate Modernization to Apache Iceberg on Google Cloud
+================================================================================
+Document Version: 1.0.0
+Author: Google Antigravity Advanced Agentic AI
+Target: Google Cloud Lakehouse / Apache Iceberg Sprint & Enterprise Marketplace
+
+--------------------------------------------------------------------------------
+1. EXECUTIVE OVERVIEW & STRATEGIC VISION
+--------------------------------------------------------------------------------
+Modern enterprises are trapped in legacy data debt: multi-million-dollar annual
+licensing fees for proprietary data warehouses (Teradata, Oracle Exadata, Netezza),
+vendor lock-in with closed cloud platforms, brittle legacy ETL codebases (Informatica,
+DataStage, SSIS, stored procedures), and unindexed unstructured media silos.
+
+According to industry benchmarks, over 70% of enterprise data migration initiatives
+exceed their original timelines or stall mid-flight due to:
+  1. Undocumented legacy stored procedures with tribal business logic.
+  2. Hidden, circular inter-table and pipeline dependency graphs.
+  3. The impossibility of petabyte-scale data verification over WAN networks.
+  4. Post-migration operational degradation ("Data Swamps") plagued by small files,
+     unpruned snapshots, sub-optimal partition layouts, and runaway slot costs.
+
+THE PRODUCT NORTH STAR:
+"NexusLake Agentic Architect turns complex, heterogeneous enterprise data estates
+into an open, governed, AI-ready Apache Iceberg lakehouse on Google Cloud—and
+continuously modernizes, heals, and optimizes it for production workloads."
+
+CORE ARCHITECTURAL AXIOM:
+  * Gemini 2.5 Pro/Flash and Google ADK act strictly as the reasoning, semantic
+    translation, planning, and root-cause analysis layer.
+  * Deterministic Google Cloud services (Serverless Spark, Datastream, Dataflow,
+    Cloud Storage, BigLake Iceberg REST Catalog, BigQuery) execute all bulk data
+    movement, transformations, and mathematical verifications.
+  * Three Hard Rules of Safety:
+    - LLMs NEVER move bulk data rows.
+    - LLMs NEVER execute destructive SQL without deterministic policy gating (AgentGuard).
+    - LLMs NEVER handle raw production credentials directly (use Secret Manager).
+
+--------------------------------------------------------------------------------
+2. THE FOUR-PLANE SYSTEM ARCHITECTURE
+--------------------------------------------------------------------------------
+NexusLake enforces strict separation of concerns across four decoupled planes:
+
+PLANE 1: AGENTIC CONTROL PLANE (Hosted SaaS / Cloud Run / GKE)
+  - Houses the Gemini 2.5 Multi-Agent Orchestrator, Strategy Decision Engine,
+    Migration-as-Code Synthesizer, and Natural-Language Estate Cockpit.
+  - Implements AgentGuard, the central policy firewall governing all proposed actions.
+  - Communicates with customer environments strictly via Private Service Connect (PSC)
+    and signed declarative manifests. Never mounts or reads raw customer data rows.
+
+PLANE 2: DATA INTELLIGENCE PLANE (Customer VPC / Metadata Boundary)
+  - Operates inside the customer's security perimeter.
+  - Houses the Universal Connector Layer, which crawls schemas, statistics, and
+    audit logs to build the technology-neutral Canonical DataAsset Graph.
+  - Houses the Migration Proof Engine, pushing mathematical sketch queries into
+    customer engines without cross-cloud data egress.
+
+PLANE 3: DETERMINISTIC EXECUTION PLANE (Customer Compute Tenant)
+  - Google Cloud Serverless Spark: Executes batch extraction, transpiled procedural
+    DAGs, and file compaction without persistent infrastructure management.
+  - Google Cloud Datastream: Serverless Change Data Capture (CDC) capturing
+    transaction log mutations from Oracle, PostgreSQL, MySQL, and SQL Server.
+  - Google Cloud Dataflow: Streaming Apache Beam pipelines for in-flight sanitization.
+  - Sensitive Data Protection (Cloud DLP): Automated inspection and tokenization.
+  - In-Flight Multimodal Vectorizer: Calls Vertex AI text and multimodal embedding
+    models during binary ingestion.
+
+PLANE 4: GOVERNED LAKEHOUSE PLANE (Open Storage & Serving)
+  - Google Cloud Storage (GCS): Object storage housing Apache Iceberg v2 Parquet,
+    Puffin index files, and position-delete files.
+  - BigLake Iceberg REST Catalog: Managed open REST catalog (biglake.googleapis.com)
+    serving as the single source of truth for table schemas and snapshot commits.
+  - Dataplex Knowledge Catalog: Universal governance, data classification tags,
+    row-level security, and column-level masking across all compute engines.
+  - Multi-Engine Serving: BigQuery Lakehouse Engine, Serverless Spark SQL,
+    Trino/Starburst, Apache Flink, Ray, and Vertex AI RAG pipelines.
+
+--------------------------------------------------------------------------------
+3. CROSS-INDUSTRY ENTERPRISE COMPLEXITY MATRIX
+--------------------------------------------------------------------------------
+NexusLake addresses complex requirements across five demanding verticals:
+
+1. FINANCIAL SERVICES & BANKING (FSI):
+   - Legacy: Mainframe DB2, VSAM, COBOL Copybooks, Oracle PL/SQL, Teradata BTEQ.
+   - Challenge: EBCDIC encoding, COMP-3 packed decimals, BCBS 239 auditability,
+     zero-loss ledger reconciliation down to 10^-8 currency precision.
+   - Solution: Mainframe Copybook Transpiler Agent, Merkle DAG Cryptographic Proofs.
+
+2. HEALTHCARE & LIFE SCIENCES:
+   - Legacy: Epic/Cerner relational databases, FHIR JSON streams, DICOM imaging.
+   - Challenge: HIPAA Safe Harbor de-identification, PHI quarantine, multimodal
+     medical images decoupled from electronic health records.
+   - Solution: In-flight Cloud DLP PHI Sanitization Agent, BigLake Object Tables
+     with multimodal embeddings.
+
+3. RETAIL & OMNICHANNEL E-COMMERCE:
+   - Legacy: MongoDB / Cassandra, Apache Kafka, Snowflake, SAP ECC.
+   - Challenge: Polymorphic document schemas, Black Friday CDC peaks (100k+ ops/sec),
+     continuous promotion-driven schema drift.
+   - Solution: Dynamic Schema Evolution Agent, CDC Merge-on-Read Equality Deletes.
+
+4. MANUFACTURING & INDUSTRIAL IOT:
+   - Legacy: InfluxDB, OSIsoft PI Historians, Parquet on S3, SCADA streams.
+   - Challenge: High-velocity time-series (millions of metrics/sec), out-of-order
+     sensor readings, edge network deduplication.
+   - Solution: Timeseries Compaction Agent, Iceberg hidden partitioning by bucketed
+     timestamp and device_id.
+
+5. TELECOMMUNICATIONS:
+   - Legacy: Hadoop/Hive (ORC/Parquet), Oracle Exadata, ASN.1 binary CDR files.
+   - Challenge: Billions of daily Call Detail Records, nested PL/SQL rating stored
+     procedures (10,000+ lines).
+   - Solution: AST-to-PySpark Transpiler Agent, BigQuery slot-cost optimizer.
+
+--------------------------------------------------------------------------------
+4. HIGH-DEMAND NEXT-GENERATION SMART FEATURES
+--------------------------------------------------------------------------------
+NexusLake incorporates eight advanced features that differentiate it from generic
+ETL utilities and simple LLM prompt wrappers:
+
+FEATURE 1: AGENTIC STORED PROCEDURE & CODE TRANSPILER
+  - Deconstructs legacy procedural code (PL/SQL, BTEQ, T-SQL) into Abstract Syntax
+    Trees (AST), mapping cursors, temporary tables, and dynamic SQL.
+  - Gemini 2.5 Pro compiles the AST into deterministic PySpark DAGs for Serverless Spark.
+  - Generates synthetic test fixtures, runs both legacy and PySpark versions, and
+    executes an automated reflection loop to eliminate semantic divergences.
+
+FEATURE 2: DUAL-RUN SHADOW VALIDATION & TRAFFIC MIRRORING
+  - Asynchronously captures production read queries from the legacy warehouse and
+    re-executes them against the newly migrated Apache Iceberg tables in BigQuery.
+  - Compares result sets, latency percentiles (P50, P95, P99), and cost per query.
+  - Cutover readiness is granted only after statistical parity across live queries.
+
+FEATURE 3: FOUR-TIER MIGRATION PROOF ENGINE (ZERO-EGRESS)
+  - Eliminates the risk of silent data corruption without moving petabytes over WAN:
+    * Tier 1 (Structural): SHA-256 schema fingerprinting (ordinals, types, nulls).
+    * Tier 2 (Statistical): In-engine pushdown HyperLogLog (HLL) cardinality, min/max.
+    * Tier 3 (Cryptographic): Commutative XOR Merkle DAG hashes across partitions.
+    * Tier 4 (Semantic): Autonomous business KPI aggregation reconciliation queries.
+
+FEATURE 4: AUTONOMOUS WAVE PLANNER & DEPENDENCY RESOLVER
+  - Builds a complete dependency DAG of tables and pipelines via SQL audit logs.
+  - Solves a multi-objective constraint problem balancing network egress quotas,
+    foreign key dependencies, and business criticality into sequenced migration waves.
+
+FEATURE 5: IN-FLIGHT MULTIMODAL VECTORIZATION
+  - Ingests unstructured enterprise media (PDF contracts, audio recordings, images)
+    directly into BigLake Object Tables on Cloud Storage.
+  - Generates dense vector embeddings in-flight via Vertex AI Embeddings and writes
+    them into Apache Iceberg ARRAY<FLOAT64> columns for Day-1 BigQuery Vector Search.
+
+FEATURE 6: AUTONOMOUS SCHEMA EVOLUTION & HEALING
+  - Intercepts incoming CDC schema drift:
+    * SAFE (add nullable column, high-confidence rename): Auto-applied in Iceberg catalog.
+    * REQUIRES_REVIEW (type widening): Generates impact report for architect approval.
+    * BREAKING (incompatible type change): Routes to GCS quarantine; alerts operators.
+
+FEATURE 7: ZERO-EGRESS SOVEREIGN CONTROL VS. DATA PLANE
+  - SaaS Control Plane sends signed Migration-as-Code manifests over Private Service
+    Connect into the customer's VPC.
+  - All compute (Serverless Spark, Datastream) and storage (GCS, BigLake) remain inside
+    the customer's security boundary. Raw data never touches the SaaS control plane.
+
+FEATURE 8: AUTONOMIC LAKEHOUSE SRE & FINOPS CONTROLLER
+  - Continuously monitors Iceberg system tables ($files, $manifests, $snapshots).
+  - Evaluates FinOps ROI: Trigger compaction only when estimated 30-day BigQuery
+    scan savings exceed 2.5x the Serverless Spark compaction cost.
+  - Automatically executes rewrite_data_files, removes orphan blobs, and prunes snapshots.
+
+--------------------------------------------------------------------------------
+5. THE 12-STAGE AGENTIC MODERNIZATION LIFECYCLE
+--------------------------------------------------------------------------------
+The end-to-end lifecycle executes across 12 distinct, policy-controlled stages:
+
+  Stage 1: DISCOVER
+    - Agent: EstateDiscoveryAgent (Gemini 2.5 Flash)
+    - Action: Connects via read-only APIs/JDBC; extracts schemas, sizes, and QPS.
+    - Output: Canonical DataAsset registry.
+
+  Stage 2: ASSESS
+    - Agent: ComplexityAssessmentAgent (Gemini 2.5 Flash)
+    - Action: Evaluates query concurrency, compute footprints, WAN egress costs.
+    - Output: Complexity Score (1-100), 3-year TCO comparative model.
+
+  Stage 3: UNDERSTAND
+    - Agent: SemanticOntologyAgent (Gemini 2.5 Pro)
+    - Action: Disambiguates cryptic naming; infers enterprise domain & lineage.
+    - Output: Unified business glossary, end-to-end lineage DAG.
+
+  Stage 4: DECIDE
+    - Agent: StrategyPlannerAgent (Gemini 2.5 Pro)
+    - Action: Assigns 1 of 10 migration patterns; builds sequenced wave schedule.
+    - Output: Declarative Migration-as-Code Blueprint.
+    - Gate: MANDATORY HUMAN ARCHITECT SIGN-OFF.
+
+  Stage 5: DESIGN
+    - Agent: IcebergLayoutArchitect (Gemini 2.5 Flash)
+    - Action: Designs hidden partitioning, Z-Ordering, and 256MB file layout.
+    - Output: Iceberg v2 DDL specifications and Puffin index configuration.
+
+  Stage 6: CLEAN
+    - Agent: DataHygieneAgent (Gemini 2.5 Flash)
+    - Action: Detects anomalies, imputes defaults, isolates corrupted records.
+    - Output: Sanitization pipelines, GCS Dead-Letter Quarantine bucket.
+
+  Stage 7: TRANSFORM
+    - Agent: PipelineTranspilerAgent (Gemini 2.5 Pro)
+    - Action: Transpiles stored procedures (PL/SQL, BTEQ) into PySpark DAGs.
+    - Output: Verified PySpark code and automated equivalence test fixtures.
+
+  Stage 8: MIGRATE
+    - Agent: MigrationOrchestratorAgent (Gemini 2.5 Flash)
+    - Action: Executes bulk Serverless Spark batch loads and Datastream CDC.
+    - Output: Populated Iceberg Parquet files committed to BigLake Catalog.
+    - Gate: MANDATORY CUTOVER APPROVAL (Asserts CDC lag < 2 seconds).
+
+  Stage 9: VALIDATE
+    - Agent: ReconciliationProofAgent (Gemini 2.5 Flash)
+    - Action: Executes 4-tier structural, statistical, Merkle, and semantic checks.
+    - Output: Machine-Readable JSON Proof Certificate.
+
+  Stage 10: GOVERN
+    - Agent: GovernanceSentinelAgent (Gemini 2.5 Flash)
+    - Action: Runs Cloud DLP; applies Dataplex Knowledge Catalog Policy Tags.
+    - Output: Universal column masking and row-level filtering policies.
+
+  Stage 11: OPERATE
+    - Agent: LakehouseSREAgent (Gemini 2.5 Flash)
+    - Action: Continuous Day-2 loop (Observe -> Analyze -> Optimize -> Revalidate).
+    - Output: Serverless Spark bin-packing, orphan cleanup, snapshot expiration.
+
+  Stage 12: VISUALIZE
+    - Agent: TelemetryInsightsAgent (Gemini 2.5 Flash)
+    - Action: Streams real-time metrics to Looker Studio and Slack/Teams webhooks.
+    - Output: Executive KPI cockpit, natural-language query assistant.
+
+--------------------------------------------------------------------------------
+6. CANONICAL DATA MODEL & UNIVERSAL CONNECTOR LAYER
+--------------------------------------------------------------------------------
+To prevent proprietary coupling, all source systems are modeled as DataAssets:
+
+class DataAsset(BaseModel):
+    id: str                                  # source_system.db.schema.table
+    name: str                                # table or collection name
+    source_system: str                       # e.g., postgres-prod-01
+    asset_type: AssetType                    # relational, nosql, object, stream
+    columns: List[ColumnSpec]                # name, type, nullability, ordinal
+    statistics: Dict[str, Any]               # row count, null counts, min/max
+    relationships: List[Dict[str, str]]      # foreign keys, candidate keys
+    lineage_upstream: List[str]              # upstream producers
+    lineage_downstream: List[str]            # downstream consumers
+    business_domain: Optional[str]           # domain classification
+    security_classification: SecurityClass   # PUBLIC, CONFIDENTIAL, PII, PHI
+    quality_profile: Optional[DataQuality]   # completeness, uniqueness, freshness
+    workload_profile: Dict[str, Any]         # QPS, scan patterns, peak hours
+    dependencies: List[str]                  # required assets before cutover
+    constraints: List[str]                   # partition keys, encoding
+    recommended_strategy: Optional[str]      # 1 of 10 migration strategies
+    strategy_rationale: Optional[str]        # LLM explanation of recommendation
+
+All connectors implement the abstract SourceConnector interface:
+  - validate_connection() -> bool
+  - discover_assets() -> List[str]
+  - extract_schema(asset_id) -> List[ColumnSpec]
+  - extract_statistics(asset_id) -> Dict[str, Any]
+  - extract_lineage(asset_id) -> Dict[str, List[str]]
+  - estimate_volume(asset_id) -> Dict[str, float]
+  - build_batch_read_spec(asset_id, split_hints) -> Dict[str, Any]
+  - initialize_cdc_stream(asset_id, checkpoint) -> Dict[str, Any]
+
+--------------------------------------------------------------------------------
+7. THE 10 MIGRATION STRATEGIES DECISION MATRIX
+--------------------------------------------------------------------------------
+1. REGISTER    -> Zero-copy catalog mapping for existing cloud Parquet/ORC lakes.
+2. REPLICATE   -> Bulk direct batch load via Serverless Spark for static tables.
+3. CDC         -> Continuous log-based replication via Datastream for live OLTP.
+4. TRANSFORM   -> Structural transformation & code transpilation for legacy formats.
+5. REWRITE     -> Data hygiene & sanitization pipeline for corrupted data.
+6. REPARTITION -> Physical layout re-engineering to optimize query scan costs.
+7. AGGREGATE   -> Micro-batch window rollup for ultra-high-volume raw sensor logs.
+8. ARCHIVE     -> Regulatory cold-storage tiering to GCS Archive.
+9. VIRTUALIZE  -> Zero-copy external federation via BigLake for restricted databases.
+10. EXCLUDE    -> Explicit omission and retirement of dead/obsolete tables.
+
+--------------------------------------------------------------------------------
+8. AGENTGUARD ACTION FIREWALL & POLICY BOUNDARY
+--------------------------------------------------------------------------------
+Every agent action proposal must pass four inspection gates before execution:
+  1. Syntactic Inspection: Denies raw DROP, TRUNCATE, and unconstrained DELETE.
+  2. Identity Assertion: Verifies ephemeral Workload Identity tokens.
+  3. Sensitivity Check: Enforces Cloud DLP and Dataplex policy tag compliance.
+  4. Risk Tier Gating:
+     - LOW: Autonomous execution (profiling, read dry-runs, ROI-positive compaction).
+     - MEDIUM: Autonomous with Slack/Teams notification (staging bucket creation).
+     - HIGH: Mandatory Human Sign-Off (renaming columns, transpiling stored procs).
+     - CRITICAL: Mandatory Multi-Sig Sign-Off (production cutover, legacy shutdown).
+
+--------------------------------------------------------------------------------
+9. FOUR-TIER PROOF ENGINE: MATHEMATICAL FORMULATION
+--------------------------------------------------------------------------------
+Tier 1: Schema Fingerprint Digest
+  Digest = SHA256( SUM( col_name || norm_type || is_nullable || ordinal ) )
+
+Tier 2: Pushdown HyperLogLog Cardinality
+  Source and target compute native HLL sketches (14-bit register precision).
+  Assert: |HLL_source - HLL_target| / HLL_source <= 0.00001
+
+Tier 3: Partition-Level Commutative Merkle DAG Hash
+  RowDigest_i = HMAC_SHA256( PK_i || Col_1,i || ... || Col_M,i )
+  PartitionMerkleRoot = XOR_SUM( RowDigest_i ) for all rows i in 1..N
+  Because XOR is commutative (A ^ B = B ^ A), the hash matches regardless of
+  distributed worker row processing order.
+
+Tier 4: Semantic Business KPI Reconciliation
+  Autonomous aggregation queries diffed across engines. Financial variance = 0.000000%.
+
+--------------------------------------------------------------------------------
+10. SPRINT MVP VS. ENTERPRISE ROADMAP
+--------------------------------------------------------------------------------
+PHASE 1: SPRINT MVP VERTICAL SLICE (Immediate Competition Submission)
+  - Connectors: PostgreSQL, MongoDB, Parquet, JSON files.
+  - Core Pipeline: Discovery -> DataAsset -> Strategy Agent -> Migration-as-Code ->
+    Serverless Spark -> GCS Iceberg v2 -> BigLake REST Catalog -> Proof Engine.
+  - Differentiator Demo 1: Transpiler converts SQL procedure to PySpark with test suite.
+  - Differentiator Demo 2: Lakehouse SRE detects small files, models ROI, executes
+    Serverless Spark bin-packing compaction via AgentGuard.
+  - Interface: Interactive Streamlit Web Console displaying DataAsset graph & proofs.
+
+PHASE 2: ADVANCED ENTERPRISE EXPANSION
+  - Connectors: Oracle Exadata, Teradata BTEQ, Snowflake, Apache Kafka.
+  - Full 4-Tier Cryptographic Merkle Proof Engine.
+  - Real-time CDC semantic drift classification and GCS quarantine dead-lettering.
+  - BigLake Object Tables with automated Vertex AI multimodal embeddings.
+
+PHASE 3: GOOGLE CLOUD MARKETPLACE COMMERCIALIZATION
+  - Multi-tenant SaaS Control Plane hosted on Google Kubernetes Engine (GKE).
+  - In-Tenant Data Plane automated deployment via Terraform & Private Service Connect.
+  - Cloud Commerce Partner Procurement API integration (metering by PB processed).
+  - SOC2 Type II, HIPAA, and FedRAMP compliance certification.
+
+================================================================================
+                                END OF DOCUMENT
+================================================================================

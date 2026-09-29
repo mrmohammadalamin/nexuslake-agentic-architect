@@ -1,0 +1,1194 @@
+For this project, I recommend creating a workspace-specific Antigravity Agent Skill rather than one huge generic prompt. Antigravity Skills use a SKILL.md with YAML frontmatter and can include supporting references/, examples/, and scripts/. They are designed for progressive disclosure, so the agent can load the detailed instructions when relevant.
+
+For NexusLake Agentic Architect, I would make the first skill the project's master architecture/development skill. Then later we can split it into smaller skills such as iceberg-migration, gemini-agents, connector-development, validation, and gcp-deployment.
+
+Recommended structure
+nexuslake-agentic-architect/
+├── .agents/
+│   └── skills/
+│       └── nexuslake-architect/
+│           ├── SKILL.md
+│           ├── references/
+│           │   ├── architecture.md
+│           │   ├── google-cloud.md
+│           │   ├── migration-patterns.md
+│           │   ├── data-model.md
+│           │   └── security.md
+│           ├── examples/
+│           │   ├── postgres-migration.yaml
+│           │   └── mongodb-migration.yaml
+│           └── scripts/
+│               └── validate-project.sh
+├── src/
+├── tests/
+├── docs/
+└── README.md
+
+Antigravity currently supports .agents/skills/<skill-name>/SKILL.md for workspace skills.
+
+Here is the master SKILL.md I recommend you give Antigravity.
+
+NexusLake Agentic Architect — Antigravity Master Skill
+NexusLake Agentic Architect
+1. Mission
+
+Build NexusLake Agentic Architect as an AI-native data estate modernization platform.
+
+The platform transforms heterogeneous enterprise data estates into an open, governed and AI-ready Apache Iceberg lakehouse on Google Cloud.
+
+The system must support an extensible range of:
+
+Relational databases
+Cloud databases and warehouses
+NoSQL databases
+Files and object storage
+Semi-structured data
+Streaming and CDC sources
+Unstructured and multimodal data
+
+Do not design the system around one database vendor.
+
+The core abstraction is the DataAsset, not a specific database technology.
+
+2. Core Product Lifecycle
+
+The platform follows this 12-stage lifecycle:
+
+Discover → Assess → Understand → Decide → Design → Clean → Transform → Migrate → Validate → Govern → Operate → Visualize
+
+Every major feature should map to one or more lifecycle stages.
+
+The system must also support a continuous operational loop:
+
+Observe → Analyze → Optimize → Revalidate
+
+This is not a separate lifecycle stage. It continuously operates after migration.
+
+3. Core Architecture
+
+Use four major architectural planes.
+
+3.1 Agentic Control Plane
+
+Responsible for:
+
+Gemini-powered reasoning
+Agent orchestration
+Planning
+Decision making
+Policy evaluation
+Human approval
+Migration planning
+Natural-language interaction
+Auditability
+
+Preferred Google technologies:
+
+Gemini
+Google ADK where appropriate
+Google Antigravity during development
+Cloud Run and/or GKE for deployed services
+IAM
+Secret Manager
+Cloud Logging
+Cloud Monitoring
+
+Never allow an LLM to directly execute unrestricted production operations.
+
+3.2 Data Intelligence Plane
+
+Responsible for understanding the estate.
+
+Maintain a canonical representation containing:
+
+DataAsset
+ ├── Identity
+ ├── SourceSystem
+ ├── Schema
+ ├── Statistics
+ ├── Relationships
+ ├── Lineage
+ ├── BusinessMeaning
+ ├── SecurityClassification
+ ├── DataQuality
+ ├── Freshness
+ ├── WorkloadProfile
+ ├── Dependencies
+ ├── MigrationConstraints
+ └── RecommendedStrategy
+
+Use deterministic metadata wherever possible.
+
+Gemini should reason over this structured representation rather than repeatedly scanning raw systems.
+
+3.3 Execution Plane
+
+Gemini decides and plans.
+
+Deterministic Google Cloud services execute.
+
+Potential technologies include:
+
+Serverless Spark
+Dataflow
+Datastream
+Cloud Storage
+BigQuery
+Apache Iceberg
+BigLake Iceberg REST Catalog
+Pub/Sub
+Cloud Run
+GKE
+
+Do not implement data movement inside the LLM layer.
+
+3.4 Lakehouse Plane
+
+Use an open architecture based on:
+
+Cloud Storage
+      ↓
+Apache Iceberg
+      ↓
+BigLake Iceberg REST Catalog
+      ↓
+BigQuery / Spark / Trino / Flink
+
+Avoid unnecessary proprietary coupling.
+
+The design should preserve interoperability with standard Iceberg engines.
+
+4. Universal Connector Architecture
+
+Never hard-code migration logic directly into individual agents.
+
+Create a connector/adapter abstraction.
+
+Each connector should expose capabilities such as:
+
+discover()
+validate_connection()
+extract_schema()
+extract_statistics()
+extract_lineage()
+profile()
+estimate_volume()
+estimate_cost()
+read_data()
+capture_changes()
+
+Create a common interface such as:
+
+class SourceConnector:
+    ...
+
+The architecture must allow new connectors to be added without changing the core orchestration system.
+
+Initial demonstration connectors should be limited to a practical MVP, for example:
+
+PostgreSQL
+MongoDB
+Parquet
+JSON
+
+Additional connectors can be added later.
+
+Do not claim that every enterprise database is already supported unless an implementation exists.
+
+5. Canonical Data Estate Model
+
+Create a technology-neutral internal model.
+
+Example:
+
+class DataAsset:
+    id: str
+    name: str
+    source_system: str
+    asset_type: str
+    schema: dict
+    statistics: dict
+    relationships: list
+    lineage: list
+    business_domain: str | None
+    security_classification: str | None
+    quality_profile: dict
+    freshness: dict
+    workload_profile: dict
+    dependencies: list
+    constraints: list
+
+The model must be extensible.
+
+Do not make the internal model dependent on PostgreSQL, MongoDB, Oracle, etc.
+
+6. Migration Decision Engine
+
+Migration should not mean blindly copying every table.
+
+Supported migration strategies should include:
+
+REGISTER
+REPLICATE
+CDC
+TRANSFORM
+REWRITE
+REPARTITION
+AGGREGATE
+ARCHIVE
+VIRTUALIZE
+EXCLUDE
+
+The decision engine should evaluate:
+
+Data size
+Schema complexity
+Data type compatibility
+Workload
+Freshness requirements
+CDC requirements
+Data quality
+Dependencies
+Security
+Business importance
+Cost
+Migration risk
+
+Gemini can propose and explain a strategy.
+
+Deterministic policies must decide whether the strategy is allowed to execute.
+
+Every decision should produce:
+
+Strategy
+Reason
+Evidence
+Risk
+Dependencies
+Expected Impact
+Required Approval
+7. Agent Architecture
+
+Use specialized agents rather than one giant agent.
+
+Recommended agents:
+
+Estate Discovery Agent
+
+Discovers:
+
+Sources
+Databases
+Tables
+Files
+Streams
+Schemas
+Metadata
+Dependencies
+Assessment Agent
+
+Analyzes:
+
+Volume
+Complexity
+Data quality
+Workload
+Migration difficulty
+Estimated resource requirements
+Semantic Intelligence Agent
+
+Identifies:
+
+Business meaning
+Entities
+Relationships
+Sensitive information
+Domains
+Semantic similarities
+Dependency Agent
+
+Builds:
+
+Table dependencies
+Application dependencies
+Pipeline dependencies
+Dashboard/report dependencies
+Strategy Agent
+
+Selects migration patterns.
+
+Architecture Agent
+
+Designs:
+
+Iceberg schemas
+Partitioning
+Table layout
+Storage architecture
+Processing architecture
+Transformation Agent
+
+Generates deterministic transformation plans and code.
+
+Migration Agent
+
+Orchestrates execution through approved Google Cloud services.
+
+Validation Agent
+
+Verifies migration correctness.
+
+Governance Agent
+
+Applies:
+
+IAM
+Data classification
+Policies
+Data quality rules
+Retention
+Audit requirements
+Operations Agent
+
+Monitors:
+
+Schema drift
+Data quality
+CDC lag
+Small files
+Partition efficiency
+Query/workload patterns
+Snapshot growth
+Visualization Agent
+
+Provides:
+
+Migration dashboards
+Architecture views
+Data lineage
+Migration progress
+Validation results
+Cost information
+8. Gemini Usage Principles
+
+Gemini is the reasoning and intelligence layer.
+
+Use Gemini for:
+
+Classification
+Semantic understanding
+Planning
+Strategy explanation
+Transformation generation
+Anomaly interpretation
+Root-cause analysis
+Natural-language interaction
+
+Do not use Gemini for:
+
+Bulk data movement
+Direct unrestricted SQL execution
+Credential management
+Deterministic validation
+Replacing Spark/Dataflow/Datastream
+
+Whenever deterministic computation is possible, use deterministic software.
+
+9. AgentGuard
+
+Implement a policy-controlled action boundary.
+
+Architecture:
+
+Gemini proposes action
+        ↓
+Action Firewall
+        ↓
+IAM / Policy / Risk / Classification
+        ↓
+Approval Check
+        ↓
+Execute
+
+High-risk operations require human approval.
+
+Examples:
+
+DROP
+DELETE
+OVERWRITE
+PRODUCTION_SCHEMA_CHANGE
+PRODUCTION_CUTOVER
+SECURITY_POLICY_CHANGE
+
+Default behavior should be deny by default for destructive or high-impact operations.
+
+Never expose production credentials directly to the model.
+
+10. Migration Proof Engine
+
+Every migration must produce evidence.
+
+Validate:
+
+Structural
+Schema
+Data types
+Constraints
+Relationships
+Data
+Row counts
+Checksums
+Null counts
+Distinct counts
+Statistical
+Distribution
+Min/max
+Aggregation comparisons
+Business
+Business rules
+Referential integrity
+Key relationships
+Operational
+Freshness
+CDC lag
+Processing status
+
+Produce a machine-readable migration report.
+
+Example:
+
+{
+  "migration_id": "mig-001",
+  "status": "validated",
+  "schema_match": true,
+  "row_count_match": true,
+  "quality_status": "passed",
+  "cdc_status": "healthy",
+  "evidence": []
+}
+11. Schema Evolution
+
+Detect:
+
+ADD COLUMN
+RENAME COLUMN
+TYPE CHANGE
+DROP COLUMN
+NESTED SCHEMA CHANGE
+TABLE CHANGE
+
+Classify changes:
+
+SAFE
+REQUIRES_REVIEW
+BREAKING
+
+Never automatically apply a breaking schema change.
+
+12. Data Quality
+
+Data quality must be measurable.
+
+Support rules such as:
+
+Completeness
+Uniqueness
+Validity
+Consistency
+Referential Integrity
+Freshness
+Distribution Drift
+
+Store quality results with the DataAsset.
+
+Allow migration policies such as:
+
+quality:
+  completeness: ">= 99%"
+  freshness: "< 15 minutes"
+  null_rate: "<= 1%"
+13. Continuous Lakehouse Optimization
+
+After migration, continuously inspect the Iceberg environment.
+
+Look for:
+
+Small files
+Poor partitioning
+Data skew
+Snapshot accumulation
+Query performance issues
+Storage growth
+Workload changes
+
+The Operations Agent can recommend or execute governed optimization.
+
+All automated changes must pass the AgentGuard policy boundary.
+
+14. Self-Healing Execution
+
+Support controlled autonomous recovery.
+
+Example:
+
+Spark job fails
+      ↓
+Detect failure
+      ↓
+Diagnose root cause
+      ↓
+Generate remediation
+      ↓
+Policy check
+      ↓
+Retry
+      ↓
+Validate
+
+Example:
+
+Executor memory exceeded
+        ↓
+Detected data skew
+        ↓
+Generate repartition strategy
+        ↓
+Policy approval
+        ↓
+Retry Spark job
+
+Never create infinite autonomous retry loops.
+
+Use bounded retries and escalation.
+
+15. Natural Language Interface
+
+Users should eventually be able to ask questions such as:
+
+Which datasets contain customer information?
+
+Which tables can migrate without transformation?
+
+Show me high-risk migration assets.
+
+Why did this table receive a CDC strategy?
+
+Which datasets have schema drift?
+
+What is preventing this migration?
+
+Which datasets require human approval?
+
+Answers must be based on actual platform metadata and evidence.
+
+Never invent migration facts.
+
+16. Security Principles
+
+Follow least privilege.
+
+Use:
+
+IAM
+Service accounts
+Secret Manager
+Workload Identity where appropriate
+Encryption
+Audit logging
+Network controls
+
+Separate:
+
+Agent identity
+Execution identity
+Customer data access
+Administrative access
+
+Do not place credentials in source code.
+
+Do not commit secrets.
+
+Use environment configuration or Secret Manager.
+
+17. Customer Data Plane
+
+Design the platform so that the control plane and customer data plane can be separated.
+
+Conceptually:
+
+Managed Control Plane
+        |
+        | APIs / orchestration
+        ↓
+Customer GCP Project
+        |
+        ├── Source systems
+        ├── Cloud Storage
+        ├── Spark/Dataflow/Datastream
+        ├── Iceberg
+        └── BigQuery
+
+Keep sensitive customer data inside the customer environment wherever practical.
+
+Do not make unsupported compliance claims.
+
+18. Marketplace Readiness
+
+The architecture should eventually support Google Cloud Marketplace commercialization.
+
+Separate:
+
+Control Plane
+Data Plane
+Tenant Management
+Entitlements
+Usage Metering
+Billing Integration
+Audit
+
+Do not implement marketplace billing before the core product is functional.
+
+First build a working migration platform.
+
+19. MVP Priority
+
+Do NOT attempt to implement the entire enterprise platform initially.
+
+Build a compelling vertical slice.
+
+MVP
+PostgreSQL
+MongoDB
+Parquet
+JSON
+        ↓
+Discovery
+        ↓
+Assessment
+        ↓
+DataAsset model
+        ↓
+Strategy Agent
+        ↓
+Transformation
+        ↓
+Serverless Spark
+        ↓
+Cloud Storage + Iceberg
+        ↓
+BigLake Iceberg REST Catalog
+        ↓
+Validation
+        ↓
+Governance
+        ↓
+Dashboard
+
+The MVP must demonstrate that different source assets can receive different migration strategies.
+
+20. Development Principles
+
+Always:
+
+Understand the existing code before changing it.
+Create an architecture plan before major implementation.
+Prefer small, testable modules.
+Keep agents independent and composable.
+Keep business logic deterministic where possible.
+Keep cloud execution separate from AI reasoning.
+Use interfaces for connectors.
+Write tests for every important decision.
+Add structured logging.
+Make failures observable.
+Avoid unnecessary dependencies.
+Never hard-code credentials.
+Never fabricate cloud API capabilities.
+Verify Google Cloud APIs against current official documentation when implementation details are uncertain.
+Keep documentation synchronized with implementation.
+21. Testing Strategy
+
+Use multiple levels of testing.
+
+Unit Tests
+
+Test:
+
+DataAsset
+Connectors
+Strategy rules
+Validation
+Policy engine
+Schema comparison
+Integration Tests
+
+Test:
+
+Source → connector
+Connector → DataAsset
+Spark → Iceberg
+Catalog registration
+Validation
+Agent Tests
+
+Test:
+
+Agent decisions
+Tool calls
+Structured outputs
+Failure handling
+Safety policies
+End-to-End Test
+
+Demonstrate:
+
+Discover
+→ Assess
+→ Decide
+→ Migrate
+→ Validate
+→ Govern
+
+using realistic sample data.
+
+22. Code Quality
+
+Preferred backend:
+
+Python
+FastAPI where an API service is required
+Pydantic for structured models
+Pytest
+AsyncIO where useful
+
+Use TypeScript only where it provides a clear advantage, especially for frontend components.
+
+Frontend may use:
+
+React
+TypeScript
+Google Material Design principles
+
+Keep frontend and backend boundaries clean.
+
+23. Repository Organization
+
+Prefer:
+
+src/
+├── agents/
+├── connectors/
+├── models/
+├── orchestration/
+├── policies/
+├── migration/
+├── validation/
+├── governance/
+├── optimization/
+├── api/
+└── services/
+
+tests/
+├── unit/
+├── integration/
+├── agents/
+└── e2e/
+
+infra/
+docs/
+examples/
+scripts/
+
+Adapt this structure to the existing repository rather than rewriting an existing project unnecessarily.
+
+24. Implementation Workflow
+
+When asked to implement a feature:
+
+Step 1 — Inspect
+
+Inspect the repository and understand:
+
+Existing architecture
+Dependencies
+Entry points
+Tests
+Configuration
+Existing services
+Step 2 — Plan
+
+Create a concise implementation plan.
+
+Identify:
+
+Files to create
+Files to modify
+Interfaces
+Dependencies
+Tests
+Google Cloud services involved
+Step 3 — Implement
+
+Implement the smallest complete vertical slice.
+
+Step 4 — Test
+
+Run relevant tests.
+
+Fix failures before continuing.
+
+Step 5 — Verify
+
+Verify:
+
+Type correctness
+Tests
+Configuration
+Security
+API behavior
+Documentation
+Step 6 — Report
+
+Summarize:
+
+Implemented
+Changed
+Tested
+Known limitations
+Next recommended step
+25. Important Agent Behavior
+
+Do not blindly follow a user request if it would violate the architecture.
+
+If a requested implementation:
+
+bypasses AgentGuard,
+exposes credentials,
+directly executes destructive SQL,
+bypasses validation,
+couples the system to one database,
+duplicates existing functionality,
+or introduces unnecessary complexity,
+
+stop and propose the safer architectural approach.
+
+Ask for clarification only when the ambiguity materially affects implementation.
+
+Otherwise make a reasonable engineering decision and document it.
+
+26. Product North Star
+
+Every implementation should move toward this goal:
+
+NexusLake Agentic Architect turns complex heterogeneous enterprise data estates into an open, governed, AI-ready Iceberg lakehouse—and continuously modernizes and optimizes it for production workloads.
+
+The platform must remain:
+
+Universal + Agentic + Open + Governed + Verifiable + Continuous.
+
+I would use this with Antigravity in three layers
+
+1. This master Skill
+Controls the overall architecture and engineering behavior.
+
+2. Smaller specialist Skills
+Later, create:
+
+.agents/skills/
+├── nexuslake-architect/
+├── nexuslake-connectors/
+├── nexuslake-iceberg/
+├── nexuslake-agents/
+├── nexuslake-validation/
+├── nexuslake-governance/
+├── nexuslake-gcp/
+└── nexuslake-testing/
+
+This follows Antigravity's recommended approach of keeping Skills focused rather than creating one enormous skill for every possible task.
+
+3. Workspace Rules
+Use .agents/rules/ for things that should always apply to the codebase, such as coding standards, security requirements, naming conventions, and "never commit secrets." Antigravity distinguishes persistent Rules from task-oriented Skills.
+
+One particularly useful addition is Google's Build with Google integration in Antigravity 2.0, which can provide curated Skills/MCP/editor extensions for Google technology stacks.
+
+I would not start coding the entire platform at once. I would have Antigravity first build the MVP vertical slice: PostgreSQL + MongoDB + Parquet/JSON → DataAsset → Gemini strategy agent → Serverless Spark → Iceberg → validation → dashboard. That gives you a working competition demo while preserving the architecture for the much larger Marketplace product.
+
+Pasted text(20260918-012524).txt
+Document
+I did more analysis on the usecase and i submit here if you want to take any points , idea or feathrure into your anlysis and your proposed solution then update it accrodingly and finalsie the proposed solution : 
+
+Yes. I reviewed your new analysis carefully. It adds several strong features that materially improve the original NexusLake concept, especially the legacy code transpiler, migration proof engine, migration-wave planner, shadow validation, schema healer, sovereign control/data-plane model, Migration-as-Code, and autonomous Day-2 SRE/FinOps.
+
+I would not put every feature into the MVP. Instead, I would make them part of the final product architecture and clearly separate MVP → advanced → future enterprise capabilities.
+
+Final proposed solution
+NexusLake Agentic Architect
+
+AI-Native Data Estate Modernization for an Open, Governed Iceberg Lakehouse
+
+NexusLake Agentic Architect is an AI-native, multi-agent platform that discovers, understands, plans, modernizes, migrates, validates, governs, and continuously optimizes heterogeneous enterprise data estates—including databases, warehouses, NoSQL systems, legacy ETL/code, files, streaming/CDC, and unstructured data—into an open Apache Iceberg lakehouse on Google Cloud.
+
+The platform uses Gemini and Google ADK as the reasoning and orchestration layer, while Google Cloud data services perform deterministic execution. Through the 12-stage lifecycle — Discover → Assess → Understand → Decide → Design → Clean → Transform → Migrate → Validate → Govern → Operate → Visualize — specialized agents reconstruct schemas, dependencies, business semantics and workloads; determine migration strategies and migration waves; generate transformation plans and legacy-code translations; execute batch and CDC migrations; and produce machine-verifiable migration evidence. Your analysis specifically strengthens this lifecycle with dedicated agents and policy gates for each stage.
+
+The target architecture is an open Iceberg lakehouse on Google Cloud Storage, registered through the BigLake Iceberg REST Catalog and accessible through multiple analytical engines. The platform supports different migration patterns rather than forcing every dataset through the same pipeline, including registration/zero-copy, batch transformation, CDC, refactoring, archival, and selective exclusion.
+
+The major differentiators
+
+1. Agentic Legacy-Code Transpiler
+
+NexusLake doesn't only migrate data; it can understand legacy business logic embedded in PL/SQL, BTEQ, T-SQL and legacy ETL workflows, generating Spark SQL/PySpark transformations and accompanying tests. The important architectural principle is that Gemini generates/reasons about transformations, while deterministic execution and validation verify them.
+
+2. Migration Proof Engine
+
+This should become one of the product's strongest differentiators.
+
+Use a four-level validation model:
+
+Structural
+    ↓
+Statistical
+    ↓
+Cryptographic
+    ↓
+Semantic / Business
+
+This allows NexusLake to compare schemas, cardinalities, distributions, hashes and business-level metrics rather than relying only on row counts.
+
+3. Agentic Migration-Wave Planner
+
+Instead of migrating thousands of tables randomly, NexusLake builds a dependency graph and creates migration waves based on:
+
+Dependencies
+Business criticality
+Network/transfer constraints
+Maintenance windows
+Migration risk
+Workload characteristics
+
+This is particularly valuable for large enterprise estates.
+
+4. Multimodal AI-Ready Lakehouse
+
+The platform should treat PDFs, images, audio and other unstructured assets as first-class data assets. During migration, Gemini/Google AI capabilities can enrich them with metadata, extracted information and embeddings, creating an AI-ready representation alongside the original objects. Your analysis explicitly proposes this in-flight enrichment architecture.
+
+5. Autonomous Schema Evolution
+
+The Schema Healer monitors CDC and incoming data for schema changes.
+
+For example:
+
+cust_phone_no
+       ↓
+customer_telephone_number
+       ↓
+Semantic analysis
+       ↓
+Safe rename → automatic
+
+Whereas an incompatible type change becomes:
+
+Incoming record
+      ↓
+Schema validation
+      ↓
+Incompatible
+      ↓
+Quarantine
+      ↓
+Impact analysis
+      ↓
+Human approval
+
+This gives you a much more realistic autonomous migration story than simply saying "the AI handles schema changes."
+
+6. AgentGuard / Policy-Controlled Autonomy
+
+Gemini should never have unrestricted production access.
+
+The architecture should remain:
+
+Gemini
+  ↓
+Proposed Action
+  ↓
+AgentGuard
+  ↓
+IAM + Policy + Risk + Data Classification
+  ↓
+Human Approval if Required
+  ↓
+Deterministic Execution
+  ↓
+Validation
+
+This is critical for an enterprise-grade product.
+
+7. Sovereign Control Plane + Customer Data Plane
+
+This is another feature I would definitely retain.
+
+             NexusLake
+          Managed Control Plane
+                  │
+        Signed Migration Plans
+                  │
+                  ▼
+       ┌──────────────────────┐
+       │ Customer Data Plane  │
+       │                      │
+       │ Source Systems       │
+       │ Datastream/Dataflow  │
+       │ Serverless Spark     │
+       │ Cloud Storage        │
+       │ Iceberg              │
+       │ BigLake Catalog      │
+       └──────────────────────┘
+
+Your analysis proposes that agents operate on metadata, statistical sketches and telemetry rather than requiring raw business rows to leave the customer environment.
+
+8. Autonomous Lakehouse SRE
+
+NexusLake shouldn't stop when migration finishes.
+
+It continuously observes the Iceberg lakehouse and can identify:
+
+Small-file accumulation
+Poor partitioning
+Data skew
+Snapshot growth
+Orphan files
+Query-performance degradation
+Changing workload patterns
+
+It can then calculate whether optimization is economically justified before launching maintenance jobs.
+
+The architecture I would now finalize
+                    ┌──────────────────────────────┐
+                    │       NexusLake Console      │
+                    │ Migration • Governance • SRE │
+                    └──────────────┬───────────────┘
+                                   │
+                    ┌──────────────▼───────────────┐
+                    │      Agentic Control Plane   │
+                    │                              │
+                    │ Gemini + ADK                 │
+                    │ Agent Orchestrator           │
+                    │ Strategy Engine              │
+                    │ AgentGuard                   │
+                    │ Migration-as-Code            │
+                    └──────────────┬───────────────┘
+                                   │
+                 Signed / Policy-Controlled Plans
+                                   │
+        ┌──────────────────────────▼──────────────────────────┐
+        │                 Customer Data Plane                 │
+        │                                                      │
+        │ Oracle • PostgreSQL • SQL Server • Teradata          │
+        │ Snowflake • MongoDB • Files • Kafka • CDC • etc.     │
+        │                         │                            │
+        │              Universal Connector Layer              │
+        │                         │                            │
+        │       ┌─────────────────▼─────────────────┐          │
+        │       │ Data Intelligence / Estate Graph  │          │
+        │       │ Schema • Lineage • Semantics      │          │
+        │       │ Quality • Workload • Dependencies │          │
+        │       └─────────────────┬─────────────────┘          │
+        │                         │                            │
+        │      ┌──────────────────▼──────────────────┐         │
+        │      │ Migration Execution Layer           │         │
+        │      │                                      │         │
+        │      │ Serverless Spark • Dataflow          │         │
+        │      │ Datastream • BigQuery • GCS          │         │
+        │      └──────────────────┬──────────────────┘         │
+        │                         │                            │
+        │                 Apache Iceberg                       │
+        │                         │                            │
+        │             BigLake Iceberg REST Catalog             │
+        │                         │                            │
+        │       BigQuery • Spark • Trino • Flink • AI         │
+        └──────────────────────────────────────────────────────┘
+                                   │
+                    ┌──────────────▼───────────────┐
+                    │ Migration Proof Engine       │
+                    │                              │
+                    │ Schema • Statistical         │
+                    │ Cryptographic • Semantic     │
+                    └──────────────┬───────────────┘
+                                   │
+                    ┌──────────────▼───────────────┐
+                    │ Autonomous Day-2 Operations   │
+                    │                              │
+                    │ SRE • FinOps • Schema Healing│
+                    │ Compaction • Optimization    │
+                    └──────────────────────────────┘
+
+This preserves the strongest parts of your original concept while making the architecture much more coherent.
+
+One important change from your analysis
+
+I would not hard-code claims such as "100% equivalence", "zero data egress", "100,000 production transactions", "<2 second CDC", "50 PB", "5×–15×", or specific cost savings into the product definition unless your implementation actually demonstrates them. Those are excellent target capabilities/benchmarks, but they can create credibility problems if presented as already guaranteed.
+
+Similarly, I would describe the connector architecture as extensible and capable of supporting heterogeneous sources, rather than claiming that all Oracle/Teradata/Snowflake/mainframe/etc. connectors are already implemented.
+
+What I would actually build for your competition
+
+Your full vision is enterprise-scale, but the competition submission should demonstrate a small working slice of the architecture.
+
+MVP
+PostgreSQL ─────┐
+                │
+MongoDB ────────┤
+                ├──→ Discovery Agent
+Parquet ────────┤
+                │
+JSON ───────────┘
+                       ↓
+                 DataAsset Model
+                       ↓
+                Assessment Agent
+                       ↓
+                Strategy Agent
+                       ↓
+             Migration-as-Code
+                       ↓
+             Serverless Spark
+                       ↓
+              Cloud Storage
+                       ↓
+               Apache Iceberg
+                       ↓
+           BigLake REST Catalog
+                       ↓
+              Proof Engine
+                       ↓
+              Governance
+                       ↓
+             Visual Dashboard
+
+Then demonstrate one advanced feature very visibly:
+
+Recommended advanced demo
+
+Legacy SQL/ETL → Gemini Transpiler → PySpark → Iceberg → Proof Engine
+
+That gives the judges something substantially more interesting than another "AI migration assistant."
+
+Then show the Day-2 story:
+
+Iceberg
+   ↓
+Detect small files
+   ↓
+Gemini analyzes workload
+   ↓
+FinOps calculates ROI
+   ↓
+AgentGuard
+   ↓
+Serverless Spark compaction
+   ↓
+Validate
+
+That makes your project a full lifecycle agentic data modernization platform, rather than merely a migration pipeline.
+
+Your uploaded analysis strongly supports this broader positioning: it describes NexusLake as covering heterogeneous estates, an agentic 12-stage lifecycle, advanced migration capabilities, autonomous SRE, and Marketplace-oriented control/data-plane architecture.

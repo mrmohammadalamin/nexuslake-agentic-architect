@@ -1,0 +1,78 @@
+apiVersion: nexuslake.ai/v1alpha1
+kind: MigrationBlueprint
+metadata:
+  blueprintId: bp-fsi-payments-wave-01
+  tenantId: global-payments-corp
+  targetGcpProject: prj-lakehouse-prod-01
+  region: us-central1
+  author: NexusLake StrategyPlannerAgent (Gemini 2.5 Pro)
+  createdAt: "2026-09-20T01:30:00Z"
+
+spec:
+  source:
+    engineType: PostgreSQL
+    connectionSecretRef: projects/prj-sec-01/secrets/pg-payments-prod
+    database: PAYMENTS_CORE
+    cdcMethod: LogicalReplicationSlot
+
+  target:
+    catalogType: BigLakeRestCatalog
+    catalogUri: biglake.googleapis.com
+    lakehouseBucket: gs://payments-iceberg-lakehouse-prod
+    dataplexLake: payments-lake
+    dataplexZone: curated-zone
+
+  migrationWaves:
+    - waveNumber: 1
+      waveName: Core_Transaction_Ledger
+      concurrency: 4
+      tables:
+        - sourceTable: PAYMENTS_CORE.TRANSACTIONS
+          targetTable: payments_curated.transactions
+          migrationPattern: CDC
+          
+          icebergLayout:
+            formatVersion: 2
+            targetFileSizeBytes: 268435456  # 256 MB optimal Parquet
+            partitionSpec:
+              - sourceColumn: TRANSACTION_TIME
+                transform: days
+                targetName: txn_day
+              - sourceColumn: SETTLEMENT_CURRENCY
+                transform: identity
+                targetName: currency
+            sortOrder:
+              - column: MERCHANT_ID
+                direction: ascending
+                nullOrder: nullsFirst
+              - column: TRANSACTION_ID
+                direction: ascending
+                nullOrder: nullsFirst
+
+          sanitizationRules:
+            - column: CARD_PAN
+              ruleType: TagSensitiveDLP
+              infoType: CREDIT_CARD_NUMBER
+              dataplexPolicyTag: projects/prj-sec-01/locations/us/taxonomies/pci/policyTags/confidential
+
+  validationPolicy:
+    engine: FourTierProofEngine
+    tolerances:
+      maxAllowedRowDiscrepancy: 0
+      maxAllowedMetricVarianceRatio: 0.000000
+    proofSteps:
+      - schemaFingerprintMatch
+      - hyperLogLogCardinalityCheck
+      - partitionLevelMerkleHashComparison
+      - semanticFinancialReconciliation
+
+  dayTwoOperationsPolicy:
+    autoCompaction:
+      enabled: true
+      triggerSmallFileCount: 25
+      targetSizeMb: 256
+      maxSlotCostBudgetUsd: 20.00
+    snapshotManagement:
+      retainDays: 30
+      maxSnapshotCount: 50
+      cleanOrphanFilesIntervalHours: 24

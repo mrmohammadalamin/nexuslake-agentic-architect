@@ -1,0 +1,28 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Pytest
+.pytest_cache/
+
+# Environments & IDEs
+.env
+.venv
+env/
+venv/
+ENV/
+.vscode/
+.idea/
+
+# Node / Frontend
+node_modules/
+frontend/node_modules/
+frontend/dist/
+
+# Test output directories
+real_migration_test_output/
+
+# OS generated
+.DS_Store
+Thumbs.db
