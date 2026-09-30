@@ -56,7 +56,7 @@ flowchart TD
     subgraph ControlPlane["3. Agentic Control Plane (Managed SaaS / Cloud Run)"]
         UI["NexusLake Modernization Cockpit SPA"]
         GUARD["AgentGuard Policy Firewall (Syntactic, IAM & DLP Gates)"]
-        AGENTS["14 Specialized Gemini 2.5 Agents Roster"]
+        AGENTS["14 Specialized Gemini 3 Agents Roster"]
         MAC["Migration-as-Code Compiler (Declarative Blueprints)"]
     end
 
@@ -108,7 +108,7 @@ mindmap
   root((NexusLake Agentic Architect))
     Four-Plane System Architecture
       Agentic Control Plane
-        Gemini 2.5 Pro and Flash
+        Gemini 3.1 Pro and Gemini 3 Flash
         AgentGuard Safety Firewall
         Migration-as-Code Compiler
       Data Intelligence Plane

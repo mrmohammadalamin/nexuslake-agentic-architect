@@ -106,7 +106,7 @@ flowchart TB
     classDef cEngine fill:#1E1B4B,stroke:#818CF8,stroke-width:2px,color:#FFFFFF,font-weight:bold;
 
     subgraph SaaS_CP["NexusLake SaaS Control Plane (AI Reasoning & Orchestration)"]
-        GEMINI["Gemini 2.5 Pro & Flash Agents"]:::cControl
+        GEMINI["Gemini 3.1 Pro & Gemini 3 Flash Agents"]:::cControl
         WAVE["NetworkX Topological Wave Solver"]:::cControl
         TRANSPILER["AST Legacy Transpiler (SQLGlot)"]:::cControl
         COCKPIT["Modernization Cockpit (FastAPI + React 18 SPA)"]:::cControl

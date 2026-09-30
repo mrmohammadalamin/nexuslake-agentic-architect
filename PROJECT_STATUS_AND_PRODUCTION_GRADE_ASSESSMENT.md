@@ -83,25 +83,25 @@ Agent            Agent            Agent            Sentinel        SRE Agent    
 
 | Stage | Agent Name | Model | Primary Responsibilities | Policy Gate |
 | :---: | :--- | :---: | :--- | :---: |
-| **1** | **`EstateDiscoveryAgent`** | Gemini 2.5 Flash | Deep crawler of source DBs, schemas, table sizes, update frequencies, PII attributes. Emits `DataAsset` graph. | Autonomous |
-| **2** | **`ComplexityAssessmentAgent`** | Gemini 2.5 Flash | Evaluates query concurrency, compute footprints, WAN egress constraints, computes Complexity Score (1-100) & TCO. | Advisory |
-| **3** | **`SemanticOntologyAgent`** | Gemini 2.5 Pro | Disambiguates cryptic table/column names, maps business domain entities, and infers lineage graphs. | Review |
-| **4** | **`StrategyPlannerAgent`** | Gemini 2.5 Pro | Assigns assets one of 10 strategies (`REGISTER`, `CDC`, `TRANSFORM`, etc.) & builds wave dependency DAGs. | **Mandatory Architect Sign-Off** |
-| **5** | **`IcebergLayoutArchitect`** | Gemini 2.5 Flash | Designs physical Iceberg v2 table specs: hidden partitioning (`days(event_time)`), Z-Ordering, 256MB Parquet chunks. | Layout Approval |
-| **6** | **`DataHygieneAgent`** | Gemini 2.5 Flash | Detects null violations, corrupted records, untrimmed strings. Imputes missing fields and routes bad rows to GCS quarantine. | Quarantine Review |
-| **7** | **`PipelineTranspilerAgent`** | Gemini 2.5 Pro | Deconstructs legacy procedural SQL (PL/SQL, BTEQ, T-SQL) into PySpark DAGs with synthesized unit tests. | **Equivalence Test Sign-Off** |
-| **8** | **`MigrationOrchestratorAgent`**| Gemini 2.5 Flash | Orchestrates historical bulk loads via Serverless Spark & configures Datastream CDC pipelines (<2s lag). | **Mandatory Cutover Sign-Off** |
-| **9** | **`ReconciliationProofAgent`** | Gemini 2.5 Flash | Executes 4-tier Merkle DAG and statistical proof engine. Emits machine-verifiable JSON Proof Certificates. | Zero-Tolerance Gate |
-| **10**| **`GovernanceSentinelAgent`** | Gemini 2.5 Flash | Scans sensitive PII/PHI (SSN, credit card, HIPAA) and applies Dataplex Knowledge Catalog policy tags for column masking. | Security Review |
-| **11**| **`LakehouseSREAgent`** | Gemini 2.5 Flash | Monitors small-file accumulation and snapshot bloat. Triggers `rewrite_data_files` bin-packing when ROI $\ge 2.5\times$. | Autonomous / Alerted |
-| **12**| **`TelemetryInsightsAgent`** | Gemini 2.5 Flash | Conversational assistant grounding natural language answers in platform metadata and real-time migration velocity KPIs. | Auto-Refreshed |
+| **1** | **`EstateDiscoveryAgent`** | Gemini 3 Flash | Deep crawler of source DBs, schemas, table sizes, update frequencies, PII attributes. Emits `DataAsset` graph. | Autonomous |
+| **2** | **`ComplexityAssessmentAgent`** | Gemini 3 Flash | Evaluates query concurrency, compute footprints, WAN egress constraints, computes Complexity Score (1-100) & TCO. | Advisory |
+| **3** | **`SemanticOntologyAgent`** | Gemini 3.1 Pro | Disambiguates cryptic table/column names, maps business domain entities, and infers lineage graphs. | Review |
+| **4** | **`StrategyPlannerAgent`** | Gemini 3.1 Pro | Assigns assets one of 10 strategies (`REGISTER`, `CDC`, `TRANSFORM`, etc.) & builds wave dependency DAGs. | **Mandatory Architect Sign-Off** |
+| **5** | **`IcebergLayoutArchitect`** | Gemini 3 Flash | Designs physical Iceberg v2 table specs: hidden partitioning (`days(event_time)`), Z-Ordering, 256MB Parquet chunks. | Layout Approval |
+| **6** | **`DataHygieneAgent`** | Gemini 3 Flash | Detects null violations, corrupted records, untrimmed strings. Imputes missing fields and routes bad rows to GCS quarantine. | Quarantine Review |
+| **7** | **`PipelineTranspilerAgent`** | Gemini 3.1 Pro | Deconstructs legacy procedural SQL (PL/SQL, BTEQ, T-SQL) into PySpark DAGs with synthesized unit tests. | **Equivalence Test Sign-Off** |
+| **8** | **`MigrationOrchestratorAgent`**| Gemini 3 Flash | Orchestrates historical bulk loads via Serverless Spark & configures Datastream CDC pipelines (<2s lag). | **Mandatory Cutover Sign-Off** |
+| **9** | **`ReconciliationProofAgent`** | Gemini 3 Flash | Executes 4-tier Merkle DAG and statistical proof engine. Emits machine-verifiable JSON Proof Certificates. | Zero-Tolerance Gate |
+| **10**| **`GovernanceSentinelAgent`** | Gemini 3 Flash | Scans sensitive PII/PHI (SSN, credit card, HIPAA) and applies Dataplex Knowledge Catalog policy tags for column masking. | Security Review |
+| **11**| **`LakehouseSREAgent`** | Gemini 3 Flash | Monitors small-file accumulation and snapshot bloat. Triggers `rewrite_data_files` bin-packing when ROI $\ge 2.5\times$. | Autonomous / Alerted |
+| **12**| **`TelemetryInsightsAgent`** | Gemini 3 Flash | Conversational assistant grounding natural language answers in platform metadata and real-time migration velocity KPIs. | Auto-Refreshed |
 
 ---
 
 ## 5. How the Agents Work Together (Orchestration & Safety)
 
 ### 1. Four-Plane Decoupling
-- **Agentic Control Plane**: Gemini 2.5 reasoning agents plan and translate logic; `AgentGuard` acts as the safety firewall.
+- **Agentic Control Plane**: Gemini 3.1 Pro and Gemini 3 Flash reasoning agents plan and translate logic; `AgentGuard` acts as the safety firewall.
 - **Data Intelligence Plane**: Connector adapters compile canonical `DataAsset` objects; raw data rows are never exported to the LLM.
 - **Deterministic Execution Plane**: Google Cloud Serverless Spark, Datastream CDC, and local `PyIceberg` perform bulk computations.
 - **Governed Lakehouse Plane**: Apache Iceberg v2 on GCS, unified by BigLake REST Catalog and Dataplex security tags.
