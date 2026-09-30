@@ -19,8 +19,8 @@
 ## 🌟 Project Value Proposition: Problems Solved & Business Benefits
 
 ### 🚨 The Core Enterprise Challenge
-Over **70% of enterprise database migrations fail, stall, or run millions over budget** due to five fundamental industry bottlenecks:
-1. **Trapped Business Logic**: Thousands of procedural stored procedures (Oracle PL/SQL, Teradata BTEQ, MS SQL T-SQL) developed over 20+ years.
+Enterprise database and warehouse migrations face five fundamental architectural bottlenecks:
+1. **Trapped Business Logic**: Thousands of procedural stored procedures (Oracle PL/SQL, Teradata BTEQ, MS SQL T-SQL) developed over decades with embedded business rules.
 2. **Petabyte WAN Verification Limits**: Verifying petabytes of migrated data over WAN networks is cost-prohibitive, while basic row counts miss subtle data corruption.
 3. **Vendor Lock-In Fears**: Enterprise buyers fear replacing one proprietary warehouse (e.g. Snowflake/Teradata) with another proprietary database engine.
 4. **Security & AI Hallucination Fears**: Enterprise CISOs block AI tools due to fears of raw PII leaking into prompt logs or AI executing destructive `DROP TABLE` statements.
