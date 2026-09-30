@@ -23,6 +23,10 @@ frontend/dist/
 # Test output directories
 real_migration_test_output/
 
-# OS generated
+# OS generated & Media
 .DS_Store
 Thumbs.db
+*.mp4
+*.mov
+*.webm
+

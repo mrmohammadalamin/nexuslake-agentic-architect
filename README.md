@@ -10,6 +10,26 @@
 
 ---
 
+## 📸 Platform Architecture & Production Screenshots
+
+![NexusLake Platform Architecture Infographic](assets/nexuslake_architecture_infographic.jpg)
+
+### 🖥️ Modernization Cockpit Views
+
+| View | Screenshot Demo | Operational Purpose |
+| :--- | :--- | :--- |
+| **0. Database Sources** | ![Database Sources Cockpit](assets/home.png) | Universal connection manager for PostgreSQL, Oracle Exadata, Snowflake, MongoDB, and S3/GCS. Includes AgentGuard live query console. |
+| **1. Estate Discovery** | ![Estate Discovery Profiling](assets/estate_discovery.png) | Automated profiling of heterogeneous sources, generating canonical `DataAsset` graphs and Dataplex PII tags. |
+| **2. Data Studio** | ![Next-Gen Data Studio](assets/data_cleaning.png) | 4-step workflow: View data, visualize distributions, apply interactive cleansing (whitespace trim, null impute, Dataplex PII mask, FPE tokenization, fuzzy dedup). |
+| **3. Wave Planner** | ![Wave Planner Topological DAG](assets/wave_planner_dag.png) | 10-strategy assignment engine and topological wave dependency DAG (Wave 1 Dimensions $\rightarrow$ Wave 2 Facts $\rightarrow$ Wave 3 Marts). |
+| **4. Transpiler Studio** | ![Transpiler Studio](assets/transpiler_studio.png) | Modernizes legacy procedural PL/SQL and BTEQ scripts into PySpark DAGs with synthesized automated unit test suites. |
+| **5. Iceberg Finalizer** | ![Iceberg Layout Customizer](assets/finalizing_iceberg.png) | Customizes target Iceberg v2 hidden partitions (`days`), Z-ordering keys, target Parquet file sizes, and generates BigLake DDL. |
+| **6. Proof Engine** | ![Proof Engine Dashboard](assets/proof_engine_dashboard.png) | Four-Tier Mathematical Verification asserting zero data loss via Commutative XOR Merkle Hash (`0x8803...`) and digital GDPR/HIPAA audit reports. |
+
+> 🎥 **Recorded Demo Video Available**: Full video walkthrough recorded and available at [`Recording 2026-09-30 034139.mp4`](Recording%202026-09-30%20034139.mp4) for Sprint submission.
+
+---
+
 ## 📌 Executive Summary & Product North Star
 
 **NexusLake Agentic Architect** (Agentic Migration Architect) is an AI-native enterprise data modernization platform designed to transform heterogeneous, legacy data estates (RDBMS, data warehouses, NoSQL, files, streaming CDC, audio, video, images, graphs, vector embeddings, spatial GIS, and scientific formats) at **petabyte scale (100+ TB / 1 Trillion+ rows)** into an open, governed, and AI-ready **Apache Iceberg v2 lakehouse on Google Cloud**.
