@@ -385,6 +385,9 @@ def plan_migration_waves(self, assets: List[DataAsset]) -> MigrationBlueprint:
 
 This guarantees that **Foundation Dimensions** (Wave 1: `customers`, `products`) always land before **Transactional Facts** (Wave 2: `orders`, `payments`), which precede **Derived Data Marts** (Wave 3: `monthly_pnl`).
 
+![Topological Wave Planner DAG](assets/wave_planner_dag.png)
+*Figure 2: The Topological Wave Planner visualizer resolving foreign key constraints and scheduling migration waves.*
+
 ---
 
 ### 6.3 AST-Driven Transpiler: Converting PL/SQL & BTEQ to Serverless PySpark
@@ -419,6 +422,9 @@ class PipelineTranspilerAgent:
 ```
 
 **Developer Insight:** Before transpiled PySpark is deployed to Google Cloud Serverless Spark, the agent synthesizes an automated Pytest test suite, validating outputs against synthetic fixtures to verify mathematical and precision equivalence ($10^{-8}$) before code ever touches production data.
+
+![Transpiler Studio Interface](assets/transpiler_studio.png)
+*Figure 3: Transpiler Studio interface translating legacy procedural SQL into PySpark with automated test synthesis.*
 
 ---
 
@@ -489,6 +495,9 @@ def compute_xor_hash(row_tuples: List[tuple]) -> str:
 ```
 
 Both the source engine (Postgres/Oracle) and target engine (Spark/Iceberg) compute this hash via pushdown queries. Only the final 64-character hex string is exchanged. If a single bit in any column differs, the hashes will not match, halting the migration instantly without exporting raw data over the network.
+
+![Four-Tier Proof Engine Dashboard](assets/proof_engine_dashboard.png)
+*Figure 4: Four-Tier Proof Engine dashboard asserting zero data loss via Commutative XOR Merkle Hash (0x8803...) with compliance certification.*
 
 ---
 
@@ -671,6 +680,32 @@ Run the web server:
 python run_server.py
 ```
 Open your browser to `http://localhost:8000/`. You can visually explore connections, inspect data distributions, customize partition specs, and observe migration progress.
+
+#### Visual Tour of the Production Cockpit:
+
+##### 1. Universal Database Sources Console
+Connect dynamically to PostgreSQL, Oracle Exadata, Snowflake, MongoDB, and AWS S3/GCS. Test connectivity and run governed SQL queries protected by the AgentGuard firewall.
+
+![Database Sources Cockpit](assets/home.png)
+*Figure 5: Universal Database Sources interface and AgentGuard query console.*
+
+##### 2. Estate Discovery & Automated Profiling
+Deep-scan schemas, foreign keys, partition specs, and update frequencies. Automatically map PII attributes to Google Cloud Dataplex policy tags.
+
+![Estate Discovery Profiling](assets/estate_discovery.png)
+*Figure 6: Estate Discovery profiling tables and generating the canonical DataAsset graph.*
+
+##### 3. Next-Gen Data Studio (Clean, Impute & Mask)
+Inspect column-level distributions, whitespace padding, and null rates. Apply interactive sanitization rules, Dataplex PII masking, and Format-Preserving Encryption with live before-and-after quality scores.
+
+![Next-Gen Data Studio](assets/data_cleaning.png)
+*Figure 7: Next-Gen Data Studio for interactive data cleansing, null imputation, and PII masking.*
+
+##### 4. Iceberg Layout Customizer & Target Schema Finalizer
+Customize target Iceberg v2 hidden partitions (`days`, `bucket`), configure Z-ordering sort keys, select Parquet target chunk sizes (256MB), and generate BigLake DDL with 1-click migration dispatch.
+
+![Iceberg Layout Customizer](assets/finalizing_iceberg.png)
+*Figure 8: Customizing Apache Iceberg v2 hidden partitioning and BigLake catalog registration.*
 
 ### Step 3: Run the Test Suite
 Verify that all unit and integration tests pass:
